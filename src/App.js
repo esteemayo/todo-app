@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import FilterButton from "./components/FilterButton";
+import { useGlobalContext } from "./utils/context";
+import TodoForm from "./components/TodoForm";
+import Todo from "./components/Todo";
+
+import "./App.css";
+import Alert from "./components/Alert";
 
 function App() {
+  const { tasks, alert, filter, showAlert, FILTER_MAP, FILTER_NAMES } =
+    useGlobalContext();
+
+  const tasksNoun = tasks.length > 1 ? "tasks" : "task";
+  const headingText = `${tasks.length} ${tasksNoun} remaining`;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="todoapp stack-large">
+      <h1>Todo List</h1>
+      {alert.show && <Alert {...alert} tasks={tasks} hideAlert={showAlert} />}
+      <TodoForm />
+      <div className="filters btn-group stack-exception">
+        {FILTER_NAMES.map((name) => {
+          return (
+            <FilterButton key={name} name={name} isPressed={name === filter} />
+          );
+        })}
+      </div>
+      <h2 id="list-heading">{headingText}</h2>
+      <ul
+        // role="list"
+        className="todo-list stack-large stack-exception"
+        aria-labelledby="list-heading"
+      >
+        {tasks.filter(FILTER_MAP[filter]).map((task) => {
+          return <Todo {...task} key={task.id} />;
+        })}
+      </ul>
     </div>
   );
 }
