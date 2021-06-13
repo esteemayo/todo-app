@@ -1,10 +1,10 @@
 import FilterButton from "./components/FilterButton";
 import { useGlobalContext } from "./utils/context";
 import TodoForm from "./components/TodoForm";
+import Alert from "./components/Alert";
 import Todo from "./components/Todo";
 
 import "./App.css";
-import Alert from "./components/Alert";
 
 function App() {
   const { tasks, alert, filter, showAlert, FILTER_MAP, FILTER_NAMES } =
